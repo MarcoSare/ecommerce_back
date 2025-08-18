@@ -64,3 +64,4 @@ $RECYCLE.BIN/
 ### Otros ###
 /node_modules/
 /.env
+/.metadata/
