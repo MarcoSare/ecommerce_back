@@ -1,15 +1,15 @@
-package com.ecommerce.clientes;
+package com.ecommerce.commons;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
+@SpringBootApplication
 @EnableFeignClients
-@SpringBootApplication(scanBasePackages = {"com.ecommerce.clientes", "com.ecommerce.commons"})
-public class MsvClientesApplication {
+public class CommonsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MsvClientesApplication.class, args);
+		SpringApplication.run(CommonsApplication.class, args);
 	}
 
 }
