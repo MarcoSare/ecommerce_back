@@ -1,5 +1,0 @@
-package com.ecommerce.clientes.repositories;
-
-public interface ClientesRepository {
-
-}

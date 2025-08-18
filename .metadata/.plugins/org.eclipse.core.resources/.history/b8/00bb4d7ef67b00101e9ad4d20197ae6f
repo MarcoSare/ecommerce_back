@@ -1,6 +1,0 @@
-package com.ecommerce.clientes.services;
-
-// Esta clase implementa a clientes service por que necesita 
-public class ClientesServiceImpl implements {
-	
-}
