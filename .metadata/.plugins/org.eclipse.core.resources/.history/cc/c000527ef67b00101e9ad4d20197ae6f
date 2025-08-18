@@ -1,0 +1,23 @@
+package com.ecommerce.clientes.services;
+
+/**
+ * Esta clase implementa ClientesService porque centraliza la lógica de negocio
+ * relacionada con operaciones CRUD de clientes. Obtiene/almacena entidades
+ * desde ClienteRepository, utiliza un mapper (ClienteMapper) para convertir
+ * entre ClientesRequest/ClientesResponse y la entidad Cliente, y devuelve
+ * los DTOs (ClientesResponse) al controlador REST para responder al cliente HTTP.
+ * Además está anotada con @Service y @Transactional para gestionar el ciclo de vida y la transacción.
+ *
+ * IMPORTANTE: Los repositorios (p. ej. ClienteRepository) deben existir y estar creados
+ * antes de instanciar este servicio, ya que la implementación los inyecta por constructor
+ * y depende de ellos para obtener/persistir entidades.
+ */
+
+public class ClientesServiceImpl implements ClienteService {
+	
+	// Repositorio JPA inyectado por constructor (acceso a datos: find/save/delete...)
+    private final ClienteRepository repo;
+
+    // Mapper para convertir entidad <-> DTO. Lo instanciamos aquí (alternativa: inyectarlo si es bean).
+    private final ClienteMapper mapper = new ClienteMapper();
+}

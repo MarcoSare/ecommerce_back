@@ -1,0 +1,172 @@
+package com.ecommerce.commons.controllers;
+
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.ecommerce.commons.exceptions.EntidadRelacionadaException;
+
+import jakarta.validation.ConstraintViolationException;
+
+import feign.FeignException;
+import feign.RetryableException;
+
+@RestControllerAdvice //Indica que esta clase manejara excepciones a nivel global. Para controlladores REST
+public class GlobalExceptionHandler {
+    // Logger para registrar eventos importantes, como por ejemplo: 
+    // errores de negocio, advertencias de seguridad, información de depuración, etc.
+    /**
+     * getLogger: Es util para registrar eventos importantes en la aplicacion.
+     * devuelve un objeto Logger configurado para la clase actual.
+     * 
+     * en palabras mas mortales: es una herramienta para registrar información útil sobre el funcionamiento de la aplicación.
+     * Por ejemplo: se puede utilizar para registrar errores que ocurren en la aplicación, advertencias sobre posibles problemas de seguridad,
+     * o información de depuración durante el desarrollo.
+     */
+    private static final Logger LOGGER = Logger.getLogger(GlobalExceptionHandler.class.getName());
+    
+    // Maneja violaciones de restricciones de Bean Validation (ej. @NotNull, @Pattern)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleConstraintViolationException(ConstraintViolationException e) {
+        // Registrar advertencia con detalle
+        // Desglose de la linea de codigo:
+        /**
+         * @property LOGGER: Es el objeto Logger que se utiliza para registrar mensajes de log.
+         * @method log: Registra un mensaje de log con un nivel de severidad específico.
+         * @param level: El nivel de severidad del mensaje de log.
+         * @param msg: El mensaje de log a registrar.
+         * @param e: La excepción que se está manejando.
+         * @param e.getCause(): Obtiene la causa raíz de la excepción, si está disponible.
+         * 
+         * 
+         * @condition (e.getCause() != null ? e.getCause() : e.getMessage()):
+         * Esta condicion nos verifica o pregunta si la causa de la excepcion es nula. Entonces devuelve
+         * la causa, si no, el mensaje de la excepcion.
+         * 
+         * ¿Que es la causa?:
+         * La causa es la excepción original que provocó la excepción actual.
+         * Puede proporcionar información adicional sobre el error.
+         * 
+         * @return: Un objeto ResponseEntity que representa la respuesta HTTP.
+         */
+        
+        LOGGER.log(Level.WARNING, "Violación de restricción: " + (e.getCause() != null ? e.getCause() : e.getMessage()));
+        // Respuesta simple con código y mensaje
+        /*
+         * @code: El código de estado HTTP que se devolverá en la respuesta.
+         * @response: El mensaje de error que se incluirá en la respuesta.
+         * 
+         * @ResponseEntity: El objeto que representa la respuesta HTTP completa,
+         * incluyendo el código de estado y el cuerpo.
+         * 
+         * .badRequest(): Método estático que crea una respuesta HTTP con el código de estado 400 (Bad Request).
+         * .body(): Método que establece el cuerpo de la respuesta HTTP.
+         * Map.of(): Método que crea un mapa inmutable con las claves y valores proporcionados.
+         */
+        return ResponseEntity.badRequest().body(Map.of(
+                "code", HttpStatus.BAD_REQUEST.value(),
+                "response", "Violación de restricción: " + e.getMessage()
+        ));
+    }
+    
+ // Maneja errores de validación en @RequestBody cuando se usa @Valid -> MethodArgumentNotValidException
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        LOGGER.log(Level.WARNING, "Error de validación de argumentos: " + e.getMessage());
+        // e.getBindingResult(): devuelve BindingResult que contiene información sobre el resultado de validación.
+        // .getFieldErrors(): devuelve List<FieldError> con cada error por campo.
+        // Aquí se mapea cada FieldError a "campo: mensaje" y se toma el primero con findFirst()
+        // Ejemplo de un FieldError: field="email", defaultMessage="El email no puede estar vacío"
+        String mensaje = e.getBindingResult().getFieldErrors().stream()
+                .map(err -> err.getField() + ": " + err.getDefaultMessage())
+                .findFirst()
+                .orElse("Error de validación");
+        return ResponseEntity.badRequest().body(Map.of(
+                "code", HttpStatus.BAD_REQUEST.value(),
+                "response", mensaje
+        ));
+    }
+
+    // NoSuchElementException -> recurso no encontrado (por ejemplo Optional::get en vacío)
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<Map<String, Object>> handleNoSuchElementException(NoSuchElementException e) {
+        LOGGER.log(Level.WARNING, "No se encontró información asociada al identificador");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                "code", HttpStatus.NOT_FOUND.value(),
+                "response", "No se encontró información asociada al identificador"
+        ));
+    }
+
+    // Excepción personalizada para conflictos por entidades relacionadas (ej. FK)
+    @ExceptionHandler(EntidadRelacionadaException.class)
+    public ResponseEntity<Map<String, Object>> handleEntidadRelacionadaException(EntidadRelacionadaException e) {
+        LOGGER.log(Level.WARNING, "Entidad relacionada: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+                "code", HttpStatus.CONFLICT.value(),
+                "response", e.getMessage()
+        ));
+    }
+
+    // Handler para excepciones lanzadas por Feign (llamadas a otros microservicios)
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<Map<String, Object>> handleFeignException(FeignException e) {
+        // FeignException.status(): devuelve el código HTTP original recibido del servicio remoto (si existe).
+        // Puede ser < 0 si no hay respuesta HTTP (por ejemplo problemas de conexion).
+        int status = e.status() > 0 ? e.status() : HttpStatus.INTERNAL_SERVER_ERROR.value();
+        LOGGER.log(Level.SEVERE, "Error en la comunicación Feign: " + e.getMessage());
+        /*
+         * Mapear códigos comunes para dar mensajes amigables:
+         * 400 -> Solicitud incorrecta al servicio remoto
+         * 401 -> No autorizado
+         * 403 -> Prohibido
+         * 404 -> Recurso no encontrado
+         * 503 -> Servicio no disponible
+         * default -> Error genérico de comunicación
+         *
+         * e.getMessage(): contiene detalles de la excepción Feign (puede incluir cuerpo/respuesta)
+         */
+        String message = switch (status) {
+            case 400 -> "Solicitud incorrecta al servicio remoto.";
+            case 401 -> "No autorizado para acceder al servicio remoto.";
+            case 403 -> "Acceso prohibido al servicio remoto.";
+            case 404 -> "Recurso no encontrado en el servicio remoto.";
+            case 503 -> "Servicio remoto no disponible.";
+            default -> "Error al comunicarse con el servicio remoto.";
+        };
+
+        return ResponseEntity.status(status).body(Map.of(
+                "code", status,
+                "response", message
+        ));
+    }
+
+    // Cuando el cliente Feign reintenta y no obtiene respuesta (timeout / host unreachable)
+    @ExceptionHandler(RetryableException.class)
+    public ResponseEntity<Map<String, Object>> handleRetryableException(RetryableException e) {
+        // RetryableException indica que la petición al servicio remoto falló y que Feign reintentó/da timeout.
+        // Aquí devolvemos 503 SERVICE_UNAVAILABLE para indicar que el servicio remoto no está accesible.
+        LOGGER.log(Level.SEVERE, "Servicio remoto no disponible o no responde: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(Map.of(
+                "code", HttpStatus.SERVICE_UNAVAILABLE.value(),
+                "response", "El servicio remoto no está disponible o no responde en este momento."
+        ));
+    }
+    
+    // Maneja cualquier otra excepción no controlada
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, Object>> handleGeneralException(Exception e) {
+        // Registrar error severo con causa si existe
+        LOGGER.log(Level.SEVERE, "Error interno del servidor: " + (e.getCause() != null ? e.getCause() : e.getMessage()));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                "code", HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "response", "Error interno del servidor: " + e.getMessage()
+        ));
+    }
+}

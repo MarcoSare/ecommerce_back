@@ -1,0 +1,20 @@
+package com.ecommerce.commons.controllers;
+
+import java.util.logging.Logger;
+
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice //Indica que esta clase manejara excepciones a nivel global. Para controlladores REST
+public class GlobalExceptionHandler {
+	// Logger para registrar eventos importantes, como por ejemplo: 
+    // errores de negocio, advertencias de seguridad, información de depuración, etc.
+    /**
+     * getLogger: Es util para registrar eventos importantes en la aplicacion.
+     * devuelve un objeto Logger configurado para la clase actual.
+     * 
+     * en palabras mas mortales: es una herramienta para registrar información útil sobre el funcionamiento de la aplicación.
+     * Por ejemplo: se puede utilizar para registrar errores que ocurren en la aplicación, advertencias sobre posibles problemas de seguridad,
+     * o información de depuración durante el desarrollo.
+     */
+	private static final Logger LOGGER = Logger.getLogger(GlobalExceptionHandler.class.getName());
+}

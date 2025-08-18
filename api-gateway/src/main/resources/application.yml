@@ -2,11 +2,11 @@ spring:
   application:
     name: api-gateway
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: "http://localhost:9000/oauth2/jwks"
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          jwk-set-uri: "http://localhost:9000/oauth2/jwks"
 
   cloud:
     loadbalancer:
@@ -16,10 +16,10 @@ spring:
      server:
       webflux:
        routes:
-        - id: msv-tipo
-          uri: lb://msv-tipo
+        - id: msv-clientes
+          uri: lb://msv-clientes
           predicates:
-            - Path=/api/tipo/**
+            - Path=/api/clientes/**
           filters:
             - StripPrefix=2
 

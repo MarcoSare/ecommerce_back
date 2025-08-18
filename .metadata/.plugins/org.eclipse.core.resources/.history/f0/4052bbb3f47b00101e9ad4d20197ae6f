@@ -1,0 +1,9 @@
+package com.ecommerce.clientes.services;
+
+import com.ecommerce.commons.dto.ClientesRequest;
+import com.ecommerce.commons.dto.ClientesResponse;
+import com.ecommerce.commons.services.CommonService;
+
+public interface ClientesService extends CommonService<ClientesRequest, ClientesResponse> {
+
+}

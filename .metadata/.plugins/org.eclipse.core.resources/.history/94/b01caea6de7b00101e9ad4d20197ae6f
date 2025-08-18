@@ -1,0 +1,10 @@
+package com.ecommerce.commons.controllers;
+
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice //Indica que esta clase manejara excepciones a nivel global. Para controlladores REST
+public class GlobalExceptionHandler {
+	// Logger para registrar eventos importantes, como por ejemplo: 
+    // errores de negocio, advertencias de seguridad, información de depuración, etc.
+    
+}
