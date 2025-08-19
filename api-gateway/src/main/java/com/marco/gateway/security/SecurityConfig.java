@@ -14,8 +14,8 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
-
-public class SecurityConfig {
+@EnableWebFluxSecurity
+public class SecurityConfig {	
 
     @Bean
     SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
@@ -43,9 +43,9 @@ public class SecurityConfig {
     
     @Bean
     ReactiveJwtAuthenticationConverterAdapter reactiveJwtAuthenticationConverter() {
-    	JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
+        JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
         authoritiesConverter.setAuthoritiesClaimName("roles");
-        authoritiesConverter.setAuthorityPrefix("");
+        authoritiesConverter.setAuthorityPrefix("ROLE_"); // <-- cambiar a ROLE_
 
         JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
         jwtConverter.setJwtGrantedAuthoritiesConverter(authoritiesConverter);
