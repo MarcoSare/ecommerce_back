@@ -13,9 +13,7 @@ import com.marco.oauth.dto.LoginRequest;
 import com.marco.oauth.services.AuthService;
 
 @RestController
-@RequestMapping("/api")
 public class AuthController {
-
     private final AuthService authService;
 
     public AuthController(AuthService authService) {
