@@ -2,11 +2,11 @@ spring:
   application:
     name: api-gateway
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: "http://localhost:9000/oauth2/jwks"
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          jwk-set-uri: "http://localhost:9000/oauth2/jwks"
 
   cloud:
     loadbalancer:
@@ -37,10 +37,10 @@ spring:
           filters:
             - StripPrefix=2
 
-        - id: pokemon
-          uri: lb://pokemon
+        - id: msv-productos
+          uri: lb://msv-productos
           predicates:
-            - Path=/api/pokemon/**
+            - Path=/api/productos/**
           filters:
             - StripPrefix=2
 
