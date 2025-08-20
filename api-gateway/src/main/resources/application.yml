@@ -23,20 +23,6 @@ spring:
           filters:
             - StripPrefix=2
 
-        - id: msv-region
-          uri: lb://msv-region
-          predicates:
-            - Path=/api/region/**
-          filters:
-            - StripPrefix=2
-
-        - id: msv-movimiento
-          uri: lb://msv-movimiento
-          predicates:
-            - Path=/api/movimiento/**
-          filters:
-            - StripPrefix=2
-
         - id: msv-productos
           uri: lb://msv-productos
           predicates:
