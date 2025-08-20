@@ -5,6 +5,9 @@ import com.ecommerce.commons.dto.PedidosRequest;
 import com.ecommerce.commons.dto.PedidosResponse;
 import com.ecommerce.msvpedidos.services.PedidosService;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -15,6 +18,10 @@ public class PedidosController extends CommonController<PedidosRequest, PedidosR
 		super(service);
 	}
 
-	
+	@GetMapping("/id-cliente/{id}")
+	public ResponseEntity<Integer> existsClienteById(@PathVariable Long id) {
+		int count = service.countByClienteId(id);
+		return ResponseEntity.ok(count);
+	}
 	
 }

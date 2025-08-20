@@ -2,7 +2,6 @@ package com.ecommerce.msvpedidos.mappers;
 
 import com.ecommerce.commons.dto.PedidosRequest;
 import com.ecommerce.commons.dto.PedidosResponse;
-import com.ecommerce.commons.dto.ProductoRequest;
 import com.ecommerce.commons.dto.ProductoResponse;
 import com.ecommerce.commons.mappers.CommonMapper;
 import com.ecommerce.msvpedidos.clients.ProductoClient;

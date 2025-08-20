@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ecommerce.commons.dto.ClientesRequest;
 import com.ecommerce.commons.dto.ClientesResponse;
 import com.ecommerce.commons.exceptions.EntidadRelacionadaException;
+import com.ecommerce.clientes.clients.PedidosClients;
 import com.ecommerce.clientes.entities.Cliente;
 import com.ecommerce.clientes.mappers.ClienteMapper;
 import com.ecommerce.clientes.repositories.ClienteRepository;
@@ -31,13 +32,16 @@ public class ClienteServiceImpl implements ClienteService {
 
     private final ClienteRepository clienteRepository;
     private final ClienteMapper clienteMapper;
+    
+    private final PedidosClients pedidosClients;
 
     
 
-    public ClienteServiceImpl(ClienteRepository clienteRepository, ClienteMapper clienteMapper) {
-		super();
+	public ClienteServiceImpl(ClienteRepository clienteRepository, ClienteMapper clienteMapper,
+			PedidosClients pedidosClients) {
 		this.clienteRepository = clienteRepository;
 		this.clienteMapper = clienteMapper;
+		this.pedidosClients = pedidosClients;
 	}
 
 	@Override
@@ -109,6 +113,12 @@ public class ClienteServiceImpl implements ClienteService {
         // if (pedidoClient.existsByCliente(id) > 0) {
         //     throw new EntidadRelacionadaException("El cliente está referenciado en pedidos y no puede eliminarse");
         // }
+        
+        boolean presenteEnPedidos = pedidosClients.existsClienteById(id) > 0;
+        if (presenteEnPedidos) {
+        	throw new EntidadRelacionadaException("El Cliente no se puede eliminar por que hay pedidos pendientes de este cliente");
+        }
+        
 
         clienteRepository.deleteById(id);
         return clienteMapper.entityToResponse(existente);
