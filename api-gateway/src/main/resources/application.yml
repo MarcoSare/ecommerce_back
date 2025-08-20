@@ -44,6 +44,13 @@ spring:
           filters:
             - StripPrefix=2
 
+        - id: msv-pedidos
+          uri: lb://msv-pedidos
+          predicates:
+            - Path=/api/pedidos/**
+          filters:
+            - StripPrefix=2
+
 server:
   port: 8090
 
