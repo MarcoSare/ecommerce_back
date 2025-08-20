@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import com.nimbusds.jose.jwk.JWKMatcher;
 import com.nimbusds.jose.jwk.JWKSelector;
@@ -21,11 +22,13 @@ import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 
+@Service
 public class AuthServiceImpl implements AuthService{
 
 	
 	private final UserDetailsService userDetailsService;
 	private final RSAKey rsaKey;
+	
 	public AuthServiceImpl(UserDetailsService userDetailsService, JWKSource<SecurityContext> jwkSource) {
 		this.userDetailsService = userDetailsService;
 		try {
@@ -42,6 +45,7 @@ public class AuthServiceImpl implements AuthService{
 			throw new RuntimeException("No se pudo obtener la clave RSA");
 		}
 	}
+	
 	@Override
 	public String authenticate(String username, String password) throws Exception {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -70,10 +74,4 @@ public class AuthServiceImpl implements AuthService{
 		
 		return signedJWT.serialize();
 	}
-	
-
-	
-	
-	
-	
 }

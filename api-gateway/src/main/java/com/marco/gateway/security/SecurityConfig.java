@@ -29,9 +29,9 @@ public class SecurityConfig {
     				return config;
     			})).authorizeExchange(ex -> ex
     		            .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-    		            .pathMatchers(HttpMethod.GET, "/**").hasAnyRole("ADMIN", "USER")
-    		            .pathMatchers(HttpMethod.POST, "/**").hasAnyRole("ADMIN", "USER")
-    		            .pathMatchers(HttpMethod.PUT, "/**").hasRole("ADMIN")
+    		            .pathMatchers(HttpMethod.GET, "/**").permitAll()//hasAnyRole("ADMIN", "USER")
+    		            .pathMatchers(HttpMethod.POST, "/**").permitAll()//hasAnyRole("ADMIN", "USER")
+    		            .pathMatchers(HttpMethod.PUT, "/**").permitAll() //hasRole("ADMIN")
     		            .pathMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
     		            .anyExchange().authenticated()
     		        )

@@ -1,9 +1,10 @@
 spring:
  application:
   name: authorization-server
+
  jpa:
   hibernate:
-   ddl-auto: create-drop
+   ddl-auto: validate
 
  datasource:
   url: ${DB_URL}
