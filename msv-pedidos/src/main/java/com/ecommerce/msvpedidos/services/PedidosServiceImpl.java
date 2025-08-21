@@ -1,7 +1,6 @@
 package com.ecommerce.msvpedidos.services;
 import com.ecommerce.commons.dto.PedidosRequest;
 import com.ecommerce.commons.dto.PedidosResponse;
-import com.ecommerce.commons.dto.ProductoResponse;
 import com.ecommerce.msvpedidos.clients.ProductoClient;
 import com.ecommerce.msvpedidos.entities.Pedido;
 import com.ecommerce.msvpedidos.entities.ProductoPedido;
@@ -11,7 +10,7 @@ import com.ecommerce.msvpedidos.repositories.PedidosRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
+
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -84,7 +83,9 @@ public class PedidosServiceImpl implements PedidosService{
 		return mapper.entityToResponse(pedido);
 	}
 	
-	
-	
-	
+	@Override
+	@Transactional(readOnly = true)
+	public int countByClienteId(Long clienteId) {
+		return repository.existsByIdCliente(clienteId);
+	}
 }

@@ -28,6 +28,7 @@ public class AuthServiceImpl implements AuthService{
 	
 	private final UserDetailsService userDetailsService;
 	private final RSAKey rsaKey;
+	
 	public AuthServiceImpl(UserDetailsService userDetailsService, JWKSource<SecurityContext> jwkSource) {
 		this.userDetailsService = userDetailsService;
 		try {
@@ -44,6 +45,7 @@ public class AuthServiceImpl implements AuthService{
 			throw new RuntimeException("No se pudo obtener la clave RSA");
 		}
 	}
+	
 	@Override
 	public String authenticate(String username, String password) throws Exception {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -72,10 +74,4 @@ public class AuthServiceImpl implements AuthService{
 		
 		return signedJWT.serialize();
 	}
-	
-
-	
-	
-	
-	
 }

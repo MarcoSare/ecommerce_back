@@ -54,8 +54,4 @@ public class AuthController {
 	    public ResponseEntity<UsuarioResponse> eliminarUsuarios(@PathVariable String username) {
 	    	return ResponseEntity.ok(usuarioService.eliminarUsuario(username));
 	    }
-
-	
-	
-	
 }
