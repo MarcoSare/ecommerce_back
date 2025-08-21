@@ -88,5 +88,4 @@ public class PedidosServiceImpl implements PedidosService{
 	public int countByClienteId(Long id) {
 		return repository.existsByIdCliente(id);
 	}
-	
 }
