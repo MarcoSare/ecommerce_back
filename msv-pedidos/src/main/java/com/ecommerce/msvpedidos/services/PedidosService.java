@@ -10,6 +10,8 @@ public interface PedidosService extends CommonService<PedidosRequest, PedidosRes
 	
 	
 	boolean productoIsPresent(Long id);
+
+	PedidosResponse cambiarEstado(String estado,Long id);
 	
 	
 	

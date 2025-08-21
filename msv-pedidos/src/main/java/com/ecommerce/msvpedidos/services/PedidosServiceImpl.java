@@ -96,4 +96,13 @@ public class PedidosServiceImpl implements PedidosService{
 		return repository.existsByIdProducto(id)>0;
 	}
 
+	@Override
+	@Transactional
+	public PedidosResponse cambiarEstado(String estado,Long id) {
+		Pedido pedido = repository.findById(id).orElseThrow();
+		pedido.setEstado(estado);
+		Pedido updated = repository.save(pedido);
+		return mapper.entityToResponse(updated);
+	}
+
 }

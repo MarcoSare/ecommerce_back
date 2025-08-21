@@ -7,6 +7,7 @@ import com.ecommerce.msvpedidos.services.PedidosService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +28,11 @@ public class PedidosController extends CommonController<PedidosRequest, PedidosR
 	@GetMapping("/id-producto/{id}")
 	public boolean productoIsPresent(@PathVariable Long id) {
 		return service.productoIsPresent(id);
+	}
+
+	@PatchMapping("/estado/{estado}/{id}")
+	public PedidosResponse estado(@PathVariable String estado, @PathVariable Long id) {
+		return service.cambiarEstado(estado, id);
 	}
 	
 }
