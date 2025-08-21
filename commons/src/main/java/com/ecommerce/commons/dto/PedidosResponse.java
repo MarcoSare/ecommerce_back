@@ -7,8 +7,9 @@ import java.util.Map;
 public record PedidosResponse (
         Long idPedidos,
         Long idCliente,
+        String cliente,
         Double total,
-        Date fechaCreacion,
+        String fechaCreacion,
         String estado,
         List<Map<String, Object>> productos
 ) {
