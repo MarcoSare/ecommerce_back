@@ -15,8 +15,11 @@ public class Usuario {
 	@Column(name = "ID_USUARIO")
 	private Long id;
 	
+	@Column(name = "USERNAME", nullable = false, length = 20, unique = true)
 	private String username;
 	
+	
+	@Column(name = "PASSWORD", nullable = false)
 	private String password;
 	
 	

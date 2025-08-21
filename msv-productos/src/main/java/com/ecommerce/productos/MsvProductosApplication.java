@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 
 @EnableFeignClients
-@SpringBootApplication(scanBasePackages = {"com.ecommerce.productos", "com.ecommerce.commons" } )
+@SpringBootApplication(scanBasePackages  = {"com.ecommerce.productos", "com.ecommerce.commons" })
 public class MsvProductosApplication {
 
 	public static void main(String[] args) {

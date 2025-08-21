@@ -15,6 +15,7 @@ public class Rol {
 	@Column(name = "ID_ROL")
 	private Long id;
 	
+	@Column(name = "NOMBRE", nullable = false, length = 15, unique = true)
 	private String nombre;
 
 	public Long getId() {
