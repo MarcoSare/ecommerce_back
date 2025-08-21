@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ecommerce</groupId>
-	<artifactId>msv-productos</artifactId>
+	<artifactId>clientes</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>msv-productos</name>
-	<description>Demo project for Spring Boot</description>
+	<name>msv-clientes</name>
+	<description>Poryecto que representa a el microservicio de clientes</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -37,7 +37,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 
 		<dependency>
@@ -55,6 +55,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		
+		<!-- Dependencia del pom del commons: -->
+		<dependency>
+			<groupId>com.ecommerce</groupId>
+			<artifactId>commons</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
