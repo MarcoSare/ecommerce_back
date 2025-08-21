@@ -1,0 +1,17 @@
+spring:
+ application:
+  name: authorization-server
+ 
+ jpa:
+  hibernate:
+   ddl-auto: validate
+   ddl-auto: validate
+
+ datasource:
+  url: ${DB_URL}
+  username: ${DB_USER}
+  password: ${DB_PASS}
+  driver-class-name: oracle.jdbc.OracleDriver
+
+server:
+ port: 9000
