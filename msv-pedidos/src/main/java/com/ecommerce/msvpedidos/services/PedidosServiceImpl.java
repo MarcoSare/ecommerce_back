@@ -83,9 +83,10 @@ public class PedidosServiceImpl implements PedidosService{
 		return mapper.entityToResponse(pedido);
 	}
 	
+	
 	@Override
-	@Transactional(readOnly = true)
-	public int countByClienteId(Long clienteId) {
-		return repository.existsByIdCliente(clienteId);
+	public int countByClienteId(Long id) {
+		return repository.existsByIdCliente(id);
 	}
+	
 }
