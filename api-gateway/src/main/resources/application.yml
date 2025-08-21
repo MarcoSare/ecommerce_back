@@ -23,17 +23,12 @@ spring:
           filters:
             - StripPrefix=2
 
-        - id: msv-region
-          uri: lb://msv-region
-          predicates:
-            - Path=/api/region/**
-          filters:
-            - StripPrefix=2
+      
 
-        - id: msv-movimiento
-          uri: lb://msv-movimiento
+        - id: msv-pedidos
+          uri: lb://msv-pedidos
           predicates:
-            - Path=/api/movimiento/**
+            - Path=/api/pedidos/**
           filters:
             - StripPrefix=2
 
@@ -44,12 +39,7 @@ spring:
           filters:
             - StripPrefix=2
 
-        - id: msv-pedidos
-          uri: lb://msv-pedidos
-          predicates:
-            - Path=/api/pedidos/**
-          filters:
-            - StripPrefix=2
+
 
 server:
   port: 8090

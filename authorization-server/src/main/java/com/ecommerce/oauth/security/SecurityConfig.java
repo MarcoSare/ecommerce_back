@@ -123,7 +123,7 @@ public class SecurityConfig {
 	UserDetailsService userDetailsService(CustomUserDetailsService customService) {
 	    return customService;
 	}
-	
+	/*
 	@Bean
 	CommandLineRunner initData(UsuarioRepository userRepo, RolRepository rolRepo, PasswordEncoder encoder) {
 	    return args -> {
@@ -156,7 +156,7 @@ public class SecurityConfig {
 	            userRepo.save(user);
 	        }
 	    };
-	}
+	}*/
 	@Bean
 	JwtAuthenticationConverter jwtAuthenticationConverter() {
 	    JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
