@@ -24,4 +24,9 @@ public class PedidosController extends CommonController<PedidosRequest, PedidosR
 		return ResponseEntity.ok(count);
 	}
 	
+	@GetMapping("/id-producto/{id}")
+	public boolean productoIsPresent(@PathVariable Long id) {
+		return service.productoIsPresent(id);
+	}
+	
 }

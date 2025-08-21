@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@SpringBootApplication
-@EnableFeignClients(basePackages = "com.ecommerce.msvpedidos.clients")
+@SpringBootApplication(scanBasePackages = {"com.ecommerce.msvpedidos", "com.ecommerce.commons"})
+@EnableFeignClients
 public class MsvPedidosApplication {
 
 	public static void main(String[] args) {

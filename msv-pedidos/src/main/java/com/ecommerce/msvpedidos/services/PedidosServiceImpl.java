@@ -88,4 +88,11 @@ public class PedidosServiceImpl implements PedidosService{
 	public int countByClienteId(Long clienteId) {
 		return repository.existsByIdCliente(clienteId);
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public boolean productoIsPresent(Long id) {
+		
+		return repository.existsByIdProducto(id)>0;
+	}
 }
