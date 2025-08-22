@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "CLIENTES")
@@ -59,6 +60,8 @@ public class Cliente {
      *   para lanzar excepciones de negocio manejables.
      */
     @Column(name = "EMAIL", nullable = false, length = 50, unique = true)
+    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", 
+             message = "El formato del email no es válido")
     private String email;
 
     /**
