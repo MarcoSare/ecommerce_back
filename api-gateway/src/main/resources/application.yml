@@ -23,12 +23,7 @@ spring:
           filters:
             - StripPrefix=2
 
-        - id: msv-productos
-          uri: lb://msv-productos
-          predicates:
-            - Path=/api/productos/**
-          filters:
-            - StripPrefix=2
+      
 
         - id: msv-pedidos
           uri: lb://msv-pedidos
@@ -36,6 +31,15 @@ spring:
             - Path=/api/pedidos/**
           filters:
             - StripPrefix=2
+
+        - id: msv-productos
+          uri: lb://msv-productos
+          predicates:
+            - Path=/api/productos/**
+          filters:
+            - StripPrefix=2
+
+
 
 server:
   port: 8090
