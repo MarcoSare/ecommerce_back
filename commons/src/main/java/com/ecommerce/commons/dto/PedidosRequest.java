@@ -11,9 +11,6 @@ import java.util.Set;
 public record PedidosRequest (
         @NotNull(message = "El id del cliente es obligatorio")
         Long idCliente,
-        @NotNull (message = "La fecha de creación es obligatoria")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-        Date fechaCreacion,
         @NotBlank(message = "El estado no puede ir en blanclo o vacio")
         String estado,
         @NotNull(message = "La lista de productos es requerida")

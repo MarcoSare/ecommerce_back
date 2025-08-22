@@ -53,7 +53,7 @@ public class PedidosServiceImpl implements PedidosService{
 		Pedido pedido = repository.findById(id).orElseThrow();
 
 		pedido.setEstado(request.estado());
-		pedido.setFechaCreacion(request.fechaCreacion());
+		//pedido.setFechaCreacion(request.fechaCreacion());
 		pedido.setIdCliente(request.idCliente());
 
 		Set<ProductoPedido> nuevosProductos = request.productos().stream().map(item -> {

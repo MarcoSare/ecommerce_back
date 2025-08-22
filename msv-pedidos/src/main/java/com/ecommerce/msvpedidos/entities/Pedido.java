@@ -22,6 +22,7 @@ public class Pedido {
     private Double total;
 
     @Column(name = "FECHA_CREACION", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
 
     @Column(name = "ESTADO", nullable = false, length = 20)
@@ -30,6 +31,12 @@ public class Pedido {
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductoPedido> productos = new HashSet<>();
 
+    @PrePersist
+    protected void onCreate() {
+        if (this.fechaCreacion == null) {
+            this.fechaCreacion = new Date();
+        }
+    }
     public Pedido() {
     }
 

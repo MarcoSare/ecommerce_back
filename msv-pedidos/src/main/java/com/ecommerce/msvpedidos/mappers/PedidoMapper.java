@@ -38,7 +38,7 @@ public class PedidoMapper extends CommonMapper<PedidosRequest, PedidosResponse, 
         Pedido pedido = new Pedido();
         pedido.setIdCliente(request.idCliente());
         pedido.setEstado(request.estado());
-        pedido.setFechaCreacion(request.fechaCreacion());
+        //pedido.setFechaCreacion(request.fechaCreacion());
         Set<ProductoPedido> productosPedido = new HashSet<>();
 
         request.productos().forEach(item -> {
